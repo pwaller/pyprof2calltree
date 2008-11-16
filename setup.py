@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.0.1'
+version = '1.0.2'
 classifiers = """\
 Development Status :: 5 - Production/Stable
 Environment :: Console
@@ -28,10 +28,9 @@ setup(
     classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
     author='Olivier Grisel',
     author_email='olivier.grisel@ensta.org',
-    url='http://www.bitbucket.org/ogrisel/pyprof2calltree/src/',
+    url='http://www.bitbucket.org/ogrisel/pyprof2calltree/overview/',
     license='BSD',
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-    include_package_data=True,
+    py_modules = ['pyprof2calltree'],
     zip_safe=True,
     entry_points = {
         'setuptools.installation': [

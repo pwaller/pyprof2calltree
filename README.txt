@@ -51,7 +51,7 @@ Python shell usage
 ==================
 
 `pyprof2calltree` is also best used from an interactive python shell such as
-the defaulft shell. For instance let use profile XML parsing::
+the defaulft shell. For instance let us profile XML parsing::
 
   >>> from xml.etree import ElementTree
   >>> from cProfile import Profile
@@ -73,11 +73,13 @@ or with the ipython_::
 
   >>> from xml.etree import ElementTree
   >>> xml_content = '<a>\n' + '\t<b/><c><d>text</d></c>\n' * 100 + '</a>'
-  >>> %prun -D /tmp/out.stats ElementTree.fromstring(xml_content)
+  >>> %prun -D out.stats ElementTree.fromstring(xml_content)
+
+  *** Profile stats marshalled to file 'out.stats'
 
   >>> from pyprof2calltree import convert, visualize
-  >>> visualize('/tmp/out.stats')
-  >>> convert('/tmp/out.stats', 'out.kgrind')
+  >>> visualize('out.stats')
+  >>> convert('out.stats', 'out.kgrind')
 
   >>> results = %prun -r ElementTree.fromstring(xml_content)
   >>> visualize(results)

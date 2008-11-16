@@ -14,7 +14,6 @@ Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Topic :: Desktop Environment :: K Desktop Environment (KDE)
 Topic :: Software Development
-Topic :: Software Development :: Profilers
 Topic :: Software Development :: Quality Assurance
 Topic :: System :: System Shells
 Topic :: Utilities

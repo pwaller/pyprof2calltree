@@ -90,5 +90,6 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.0.1 - 2008-10-16: fix typos in 1.0 release
  - 1.0 - 2008-10-16: initial release under the pyprof2calltree name
 

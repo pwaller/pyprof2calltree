@@ -104,7 +104,10 @@ class CalltreeConverter(object):
             self._entry(entry)
 
     def visualize(self):
-        """Launch kcachegrind on the converted entries"""
+        """Launch kcachegrind on the converted entries
+
+        kcachegrind must be present in the system path
+        """
 
         if self.out_file is None:
             _, outfile = tempfile.mkstemp(".log", "pyprof2calltree")

@@ -2,24 +2,27 @@ Overview
 ========
 
 Script to help visualize profiling data collected with the cProfile
-python module with the `kcachegrind`_ graphical calltree analyser.
+python module with the kcachegrind_ (screenshots_) graphical calltree
+analyser.
 
 This is a rebranding of the venerable
 http://www.gnome.org/~johan/lsprofcalltree.py script by David Allouche
-et Al. to make it easier to distribute on pypi and behave more like the
-scripts of the debian `kcachegrind-converters package`_. The final goal
-is to make it part of the official upstream `kdesdk`_ package.
+et Al. It aims at making it easier to distribute (e.g. through pypi)
+and behave more like the scripts of the debian kcachegrind-converters_
+package. The final goal is to make it part of the official upstream
+kdesdk_ package.
 
-.. _`kcachegrind`: http://kcachegrind.sourceforge.net
-.. _`kcachegrind-converters package`: http://packages.debian.org/en/stable/kcachegrind-converters
-.. _`kdesdk`: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
-
+.. _kcachegrind: http://kcachegrind.sourceforge.net
+.. _kcachegrind-converters: http://packages.debian.org/en/stable/kcachegrind-converters
+.. _kdesdk: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
+.. _screenshots: http://images.google.fr/images?q=kcachegrind
 
 Authors
 =======
 
 - David Allouche (initial author)
-- Jp Calderone & Itamar Shtull-Trauring
+- Jp Calderone
+- Itamar Shtull-Trauring
 - Johan Dahlin
 - Olivier Grisel (repackaging)
 

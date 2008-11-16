@@ -79,6 +79,9 @@ or with the ipython_::
   >>> visualize('/tmp/out.stats')
   >>> convert('/tmp/out.stats', 'out.kgrind')
 
+  >>> results = %prun -r ElementTree.fromstring(xml_content)
+  >>> visualize(results)
+
 .. _ipython: http://ipython.scipy.org
 
 

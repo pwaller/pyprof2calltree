@@ -20,11 +20,11 @@ kdesdk_ package.
 Authors
 =======
 
-- David Allouche (initial author)
+- David Allouche (original author)
 - Jp Calderone
 - Itamar Shtull-Trauring
 - Johan Dahlin
-- Olivier Grisel (repackaging)
+- Olivier Grisel (repackaging and pstats support)
 
 
 Command line usage
@@ -33,19 +33,54 @@ Command line usage
 Upon installation you shoould have a `pyprof2calltree` script in your path::
 
   $ pyprof2calltree --help
+  Usage: /usr/bin/pyprof2calltree [-k] [-o output_file_path] [-i input_file_path] [-r scriptfile [args]]
 
-TODO
+  Options:
+    -h, --help            show this help message and exit
+    -o OUTFILE, --outfile=OUTFILE
+                          Save calltree stats to <outfile>
+    -i INFILE, --infile=INFILE
+                          Read python stats from <infile>
+    -r SCRIPT, --run-script=SCRIPT
+                          Name of the python script to run to collect profiling
+                          data
+    -k, --kcachegrind     Run the kcachegrind tool on the converted data
 
 
 Python shell usage
 ==================
 
-pyprof2calltree is also best used from an interactive python shell such as
-ipython_::
+`pyprof2calltree` is also best used from an interactive python shell such as
+the defaulft shell. For instance let use profile XML parsing::
 
-  TODO
+  >>> from xml.etree import ElementTree
+  >>> from cProfile import Profile
+  >>> xml_content = '<a>\n' + '\t<b/><c><d>text</d></c>\n' * 100 + '</a>'
+  >>> profiler = Profile()
+  >>> profiler.runctx(
+  ...     "ElementTree.fromstring(xml_content)",
+  ...     locals(), globals())
+
+  >>> from pyprof2calltree import convert, visualize
+  >>> visualize(profiler.getstats())                            # run kcachegrind
+  >>> convert(profiler.getstats(), 'profiling_results.kgrind')  # save for later
+
+or with the ipython_::
+
+  In [1]: %doctest_mode
+  Exception reporting mode: Plain
+  Doctest mode is: ON
+
+  >>> from xml.etree import ElementTree
+  >>> xml_content = '<a>\n' + '\t<b/><c><d>text</d></c>\n' * 100 + '</a>'
+  >>> %prun -D /tmp/out.stats ElementTree.fromstring(xml_content)
+
+  >>> from pyprof2calltree import convert, visualize
+  >>> visualize('/tmp/out.stats')
+  >>> convert('/tmp/out.stats', 'out.kgrind')
 
 .. _ipython: http://ipython.scipy.org
+
 
 Change log
 ==========

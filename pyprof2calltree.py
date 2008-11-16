@@ -33,6 +33,8 @@ import os
 import sys
 import tempfile
 
+__all__ = ['convert', 'visualize', 'CalltreeConverter']
+
 class Code(object):
     pass
 
@@ -240,6 +242,41 @@ def main():
     if options.kcachegrind:
         print "launching kcachegrind"
         kg.visualize()
+
+
+def visualize(profiling_data):
+    """launch the kcachegrind on `profiling_data`
+
+    `profiling_data` can either be:
+        - a pstats.Stats instance
+        - the filename of a pstats.Stats dump
+        - the result of a call to cProfile.Profile.getstats()
+    """
+    converter = CalltreeConverter(profiling_data)
+    converter.visualize()
+
+def convert(profiling_data, outputfile):
+    """convert `profiling_data` to calltree format and dump it to `outputfile`
+
+    `profiling_data` can either be:
+        - a pstats.Stats instance
+        - the filename of a pstats.Stats dump
+        - the result of a call to cProfile.Profile.getstats()
+
+    `outputfile` can either be:
+        - a file() instance open in write mode
+        - a filename
+    """
+    converter = CalltreeConverter(profiling_data)
+    if isinstance(outputfile, basestring):
+        f = file(outputfile, "wb")
+        try:
+            converter.output(f)
+        finally:
+            f.close()
+    else:
+        converter.output(outputfile)
+
 
 if __name__ == '__main__':
     sys.exit(main())

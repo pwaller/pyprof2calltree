@@ -17,14 +17,15 @@ kdesdk_ package.
 .. _kdesdk: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
 .. _screenshots: http://images.google.fr/images?q=kcachegrind
 
-Authors
-=======
+Authors and contributors
+========================
 
 - David Allouche (original author)
 - Jp Calderone
 - Itamar Shtull-Trauring
 - Johan Dahlin
 - Olivier Grisel (repackaging and pstats support)
+- David Glick (fix in conversion algorithm)
 
 
 Command line usage
@@ -90,6 +91,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.1.0 - 2008-12-21: integrate fix in conversion by David Glick
  - 1.0.3 - 2008-10-16: fix typos in 1.0 release
  - 1.0 - 2008-10-16: initial release under the pyprof2calltree name
 

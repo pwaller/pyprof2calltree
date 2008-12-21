@@ -69,14 +69,14 @@ def pstats2entries(data):
 
         # collect the new entry
         entries[code_info] = entry
-        allcallers[code_info] = callers.keys()
+        allcallers[code_info] = callers.items()
 
     # second pass of stats to plug callees into callers
     for entry in entries.itervalues():
         entry_label = cProfile.label(entry.code)
         entry_callers = allcallers.get(entry_label, [])
-        for entry_caller in entry_callers:
-            entries[entry_caller].calls.append(entry)
+        for entry_caller, call_info in entry_callers:
+            entries[entry_caller].calls.append((entry, call_info))
 
     return entries.values()
 
@@ -163,11 +163,11 @@ class CalltreeConverter(object):
         else:
             lineno = code.co_firstlineno
 
-        for subentry in calls:
-            self._subentry(lineno, subentry)
+        for subentry, call_info in calls:
+            self._subentry(lineno, subentry, call_info)
         print >> out_file
 
-    def _subentry(self, lineno, subentry):
+    def _subentry(self, lineno, subentry, call_info):
         out_file = self.out_file
         code = subentry.code
         #print >> out_file, 'cob=%s' % (code.co_filename,)
@@ -175,9 +175,9 @@ class CalltreeConverter(object):
         print >> out_file, 'cfn=%s %s:%d' % (
             co_name, co_filename, co_firstlineno)
         print >> out_file, 'cfi=%s' % (co_filename,)
-        print >> out_file, 'calls=%d %d' % (subentry.callcount, co_firstlineno)
+        print >> out_file, 'calls=%d %d' % (call_info[0], co_firstlineno)
 
-        totaltime = int(subentry.totaltime * 1000)
+        totaltime = int(call_info[3] * 1000)
         print >> out_file, '%d %d' % (lineno, totaltime)
 
 def main():

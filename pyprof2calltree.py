@@ -139,7 +139,6 @@ class CalltreeConverter(object):
         out_file = self.out_file
 
         code = entry.code
-        #print >> out_file, 'ob=%s' % (code.co_filename,)
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         print >> out_file, 'fi=%s' % (co_filename,)
@@ -183,7 +182,8 @@ class CalltreeConverter(object):
 def main():
     """Execute the converter using parameters provided on the command line"""
 
-    usage = "%s [-k] [-o output_file_path] [-i input_file_path] [-r scriptfile [args]]"
+    usage = ("%s [-k] [-o output_file_path] [-i input_file_path]"
+             " [-r scriptfile [args]]")
     parser = optparse.OptionParser(usage=usage % sys.argv[0])
     parser.allow_interspersed_args = False
     parser.add_option('-o', '--outfile', dest="outfile",

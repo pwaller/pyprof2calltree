@@ -1,5 +1,4 @@
-from setuptools import setup, find_packages
-import sys, os
+from setuptools import setup
 
 version = '1.1.0'
 classifiers = """\

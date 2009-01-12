@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (c) 2006-2008, David Allouche, Jp Calderone, Itamar Shtull-Trauring,
 # Johan Dahlin, Olivier Grisel <olivier.grisel@ensta.org>
 #
@@ -215,7 +216,7 @@ def main():
             except SystemExit:
                 pass
         finally:
-            kg = CalltreeConverter(prof.getstats())
+            kg = CalltreeConverter(pstats.Stats(prof))
 
     elif options.infile is not None:
         # use the profiling data from some input file

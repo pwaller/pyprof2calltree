@@ -172,9 +172,9 @@ class CalltreeConverter(object):
         code = subentry.code
         #print >> out_file, 'cob=%s' % (code.co_filename,)
         co_filename, co_firstlineno, co_name = cProfile.label(code)
+        print >> out_file, 'cfi=%s' % (co_filename,)
         print >> out_file, 'cfn=%s %s:%d' % (
             co_name, co_filename, co_firstlineno)
-        print >> out_file, 'cfi=%s' % (co_filename,)
         print >> out_file, 'calls=%d %d' % (call_info[0], co_firstlineno)
 
         totaltime = int(call_info[3] * 1000)

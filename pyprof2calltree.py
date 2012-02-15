@@ -143,8 +143,11 @@ class CalltreeConverter(object):
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         print >> out_file, 'fi=%s' % (co_filename,)
-        print >> out_file, 'fn=%s %s:%d' % (
-            co_name, co_filename, co_firstlineno)
+        if co_filename != '~' and co_firstlineno != 0:
+            print >> out_file, 'fn=%s %s:%d' % (
+                co_name, co_filename, co_firstlineno)
+        else:
+            print >> out_file, 'fn=%s' % co_name
 
         inlinetime = int(entry.inlinetime * 1000)
         if isinstance(code, str):
@@ -173,8 +176,11 @@ class CalltreeConverter(object):
         #print >> out_file, 'cob=%s' % (code.co_filename,)
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         print >> out_file, 'cfi=%s' % (co_filename,)
-        print >> out_file, 'cfn=%s %s:%d' % (
-            co_name, co_filename, co_firstlineno)
+        if co_filename != '~' and co_firstlineno != 0:
+            print >> out_file, 'cfn=%s %s:%d' % (
+                co_name, co_filename, co_firstlineno)
+        else:
+            print >> out_file, 'cfn=%s' % co_name
         print >> out_file, 'calls=%d %d' % (call_info[0], co_firstlineno)
 
         totaltime = int(call_info[3] * 1000)

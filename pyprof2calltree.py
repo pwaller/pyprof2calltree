@@ -216,6 +216,12 @@ def main():
             outfile = '%s.log' % os.path.basename(options.script)
 
         prof = cProfile.Profile()
+
+        # Try to deal with programs (e.g., bzr) that avoid sys.exit(),
+        # but still run atexit handlers.
+        import atexit
+        atexit.register(exit)
+
         try:
             try:
                 prof = prof.run('execfile(%r)' % (sys.argv[0],))

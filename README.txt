@@ -26,6 +26,7 @@ Authors and contributors
 - Johan Dahlin
 - Olivier Grisel (repackaging and pstats support)
 - David Glick (fix in conversion algorithm)
+- Peter Waller (current pypi maintainer)
 
 
 Command line usage

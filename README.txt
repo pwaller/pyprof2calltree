@@ -27,7 +27,7 @@ Authors and contributors
 - Olivier Grisel (repackaging and pstats support)
 - David Glick (fix in conversion algorithm)
 - Peter Waller (current pypi maintainer)
-
+- Steven Maude (breaking things)
 
 Command line usage
 ==================
@@ -92,6 +92,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.1.1 - 2013-09-25: Miscellaneous bugfixes
  - 1.1.0 - 2008-12-21: integrate fix in conversion by David Glick
  - 1.0.3 - 2008-10-16: fix typos in 1.0 release
  - 1.0 - 2008-10-16: initial release under the pyprof2calltree name

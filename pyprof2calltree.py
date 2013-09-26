@@ -2,7 +2,7 @@
 # Copyright (c) 2006-2008, David Allouche, Jp Calderone, Itamar Shtull-Trauring,
 # Johan Dahlin, Olivier Grisel <olivier.grisel@ensta.org>
 #
-# Send maintainence requests needing new pypi packages to:
+# Send maintenance requests needing new pypi packages to:
 #   Peter Waller <p@pwaller.net>
 #   https://github.com/pwaller/pyprof2calltree
 #
@@ -49,7 +49,7 @@ class Entry(object):
 def pstats2entries(data):
     """Helper to convert serialized pstats back to a list of raw entries
 
-    Converse opperation of cProfile.Profile.snapshot_stats()
+    Converse operation of cProfile.Profile.snapshot_stats()
     """
     entries = dict()
     allcallers = dict()
@@ -251,8 +251,8 @@ def main():
         sys.exit(2)
 
     if options.outfile is not None or not options.kcachegrind:
-        # user either explicitely required output file or requested by not
-        # explicitely asking to launch kcachegrind
+        # user either explicitly required output file or requested by not
+        # explicitly asking to launch kcachegrind
         print "writing converted data to: " + outfile
         kg.output(file(outfile, 'wb'))
 

@@ -32,7 +32,7 @@ Authors and contributors
 Command line usage
 ==================
 
-Upon installation you shoould have a `pyprof2calltree` script in your path::
+Upon installation you should have a `pyprof2calltree` script in your path::
 
   $ pyprof2calltree --help
   Usage: /usr/bin/pyprof2calltree [-k] [-o output_file_path] [-i input_file_path] [-r scriptfile [args]]
@@ -53,7 +53,7 @@ Python shell usage
 ==================
 
 `pyprof2calltree` is also best used from an interactive python shell such as
-the defaulft shell. For instance let us profile XML parsing::
+the default shell. For instance let us profile XML parsing::
 
   >>> from xml.etree import ElementTree
   >>> from cProfile import Profile

@@ -11,6 +11,8 @@ Operating System :: Unix
 Programming Language :: Python :: 2.5
 Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
+Programming Language :: Python :: 3.2
+Programming Language :: Python :: 3.3
 Topic :: Desktop Environment :: K Desktop Environment (KDE)
 Topic :: Software Development
 Topic :: Software Development :: Quality Assurance
@@ -22,7 +24,7 @@ setup(
     name='pyprof2calltree',
     version=version,
     description="Help visualize profiling data from cProfile with kcachegrind",
-    long_description=file('README.txt').read(),
+    long_description=open('README.txt').read(),
     keywords='profiler visualization programming tool kde kcachegrind',
     classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
     author='Olivier Grisel',

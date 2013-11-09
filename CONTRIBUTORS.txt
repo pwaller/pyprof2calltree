@@ -19,9 +19,9 @@ In chronological order:
   * Repackaging and pstats support
 
 * David Glick
-  * Fix in conversion algorithm)
+  * Fix in conversion algorithm
 
-*  Peter Waller <p@pwaller.net>
+* Peter Waller <p@pwaller.net>
   * Taking over pypi maintainance
 
 * Steven Maude

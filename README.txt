@@ -80,6 +80,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.2.0 - 2013-11-09: Python 3 support
  - 1.1.1 - 2013-09-25: Miscellaneous bugfixes
  - 1.1.0 - 2008-12-21: integrate fix in conversion by David Glick
  - 1.0.3 - 2008-10-16: fix typos in 1.0 release

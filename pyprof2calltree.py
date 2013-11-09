@@ -6,6 +6,8 @@
 #   Peter Waller <p@pwaller.net>
 #   https://github.com/pwaller/pyprof2calltree
 #
+# See CONTRIBUTORS.txt.
+#
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,0 +1,31 @@
+# Contributions to the pyprof2calltree project
+
+## Creators
+
+* David Allouche
+* Jp Calderone
+* Itamar Shtull-Trauring
+* Johan Dahlin
+
+## Maintainer
+
+* Peter Waller <p@pwaller.net>
+
+## Contributors
+
+In chronological order:
+
+* Olivier Grisel <olivier.grisel@ensta.org>
+  * Repackaging and pstats support
+
+* David Glick
+  * Fix in conversion algorithm)
+
+*  Peter Waller <p@pwaller.net>
+  * Taking over pypi maintainance
+
+* Steven Maude
+  * Breaking things, documentation
+
+* [Your name or handle] <[email or website]>
+  * [Brief summary of your changes]

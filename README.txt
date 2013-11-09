@@ -17,18 +17,6 @@ kdesdk_ package.
 .. _kdesdk: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
 .. _screenshots: http://images.google.fr/images?q=kcachegrind
 
-Authors and contributors
-========================
-
-- David Allouche (original author)
-- Jp Calderone
-- Itamar Shtull-Trauring
-- Johan Dahlin
-- Olivier Grisel (repackaging and pstats support)
-- David Glick (fix in conversion algorithm)
-- Peter Waller (current pypi maintainer)
-- Steven Maude (breaking things)
-
 Command line usage
 ==================
 

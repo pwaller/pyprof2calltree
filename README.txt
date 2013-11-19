@@ -80,6 +80,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.3.0 - 2013-11-19: qcachegrind support
  - 1.2.0 - 2013-11-09: Python 3 support
  - 1.1.1 - 2013-09-25: Miscellaneous bugfixes
  - 1.1.0 - 2008-12-21: integrate fix in conversion by David Glick

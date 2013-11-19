@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '1.2.0'
+version = '1.3.0'
 classifiers = """\
 Development Status :: 5 - Production/Stable
 Environment :: Console
@@ -23,9 +23,9 @@ Topic :: Utilities
 setup(
     name='pyprof2calltree',
     version=version,
-    description="Help visualize profiling data from cProfile with kcachegrind",
+    description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
     long_description=open('README.txt').read(),
-    keywords='profiler visualization programming tool kde kcachegrind',
+    keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
     classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
     author='Olivier Grisel',
     author_email='olivier.grisel@ensta.org',

@@ -34,9 +34,10 @@ take a previously recorded instance of the pstats.Stats class.
 """
 
 import cProfile
-import pstats
 import optparse
 import os
+import pstats
+import subprocess
 import sys
 import tempfile
 
@@ -97,10 +98,19 @@ def pstats2entries(data):
 
     return list(entries.values())
 
+
+def is_installed(prog):
+    """Return whether or not a given executable is installed on the machine."""
+    devnull = open(os.devnull, 'w')
+    retcode = subprocess.call(['which', prog], stdout=devnull)
+    devnull.close()
+    return retcode == 0
+
+
+KCACHEGRIND_EXECUTABLES = ["kcachegrind", "qcachegrind"]
+
 class CalltreeConverter(object):
     """Convert raw cProfile or pstats data to the calltree format"""
-
-    kcachegrind_command = "kcachegrind %s"
 
     def __init__(self, profiling_data):
         if is_basestring(profiling_data):
@@ -123,9 +133,10 @@ class CalltreeConverter(object):
             self._entry(entry)
 
     def visualize(self):
-        """Launch kcachegrind on the converted entries
+        """Launch kcachegrind on the converted entries.
 
-        kcachegrind must be present in the system path
+        One of the executables listed in KCACHEGRIND_EXECUTABLES
+        must be present in the system path.
         """
 
         if self.out_file is None:
@@ -136,12 +147,25 @@ class CalltreeConverter(object):
         else:
             use_temp_file = False
 
+        available_cmd = None
+
+        for cmd in KCACHEGRIND_EXECUTABLES:
+            if is_installed(cmd):
+                available_cmd = cmd
+                break
+
+        if available_cmd is None:
+            sys.stderr.write("Could not find kcachegrind. Tried: %s\n" %
+                    ", ".join(KCACHEGRIND_EXECUTABLES))
+            return
+
+        self.out_file.close()
+
         try:
-            os.system(self.kcachegrind_command % self.out_file.name)
+            subprocess.call([cmd, self.out_file.name])
         finally:
             # clean the temporary file
             if use_temp_file:
-                f.close()
                 os.remove(outfile)
                 self.out_file = None
 
@@ -262,11 +286,11 @@ def main():
     if options.outfile is not None or not options.kcachegrind:
         # user either explicitly required output file or requested by not
         # explicitly asking to launch kcachegrind
-        sys.stdout.write("writing converted data to: %s\n" % outfile)
+        sys.stderr.write("writing converted data to: %s\n" % outfile)
         kg.output(open(outfile, 'wb'))
 
     if options.kcachegrind:
-        sys.stdout.write("launching kcachegrind\n")
+        sys.stderr.write("launching kcachegrind\n")
         kg.visualize()
 
 

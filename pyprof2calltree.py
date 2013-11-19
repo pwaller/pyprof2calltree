@@ -158,7 +158,6 @@ class CalltreeConverter(object):
         code = entry.code
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
-        out_file.write('fi=%s\n' % (co_filename,))
         if co_filename != '~' and co_firstlineno != 0:
             out_file.write('fn=%s %s:%d\n' % (
                 co_name, co_filename, co_firstlineno))
@@ -189,9 +188,7 @@ class CalltreeConverter(object):
     def _subentry(self, lineno, subentry, call_info):
         out_file = self.out_file
         code = subentry.code
-        # out_file.write('cob=%s\n' % (code.co_filename,))
         co_filename, co_firstlineno, co_name = cProfile.label(code)
-        out_file.write('cfi=%s\n' % (co_filename,))
         if co_filename != '~' and co_firstlineno != 0:
             out_file.write('cfn=%s %s:%d\n' % (
                 co_name, co_filename, co_firstlineno))

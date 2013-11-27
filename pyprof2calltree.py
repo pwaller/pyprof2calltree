@@ -287,7 +287,7 @@ def main():
         # user either explicitly required output file or requested by not
         # explicitly asking to launch kcachegrind
         sys.stderr.write("writing converted data to: %s\n" % outfile)
-        kg.output(open(outfile, 'wb'))
+        kg.output(open(outfile, 'w'))
 
     if options.kcachegrind:
         sys.stderr.write("launching kcachegrind\n")

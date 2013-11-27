@@ -80,6 +80,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.3.1 - 2013-11-27: Bugfix for broken output writing on python 3 (#8)
  - 1.3.0 - 2013-11-19: qcachegrind support
  - 1.2.0 - 2013-11-09: Python 3 support
  - 1.1.1 - 2013-09-25: Miscellaneous bugfixes

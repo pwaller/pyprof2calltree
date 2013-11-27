@@ -141,7 +141,7 @@ class CalltreeConverter(object):
 
         if self.out_file is None:
             _, outfile = tempfile.mkstemp(".log", "pyprof2calltree")
-            f = open(outfile, "wb")
+            f = open(outfile, "w")
             self.output(f)
             use_temp_file = True
         else:
@@ -319,7 +319,7 @@ def convert(profiling_data, outputfile):
     """
     converter = CalltreeConverter(profiling_data)
     if is_basestring(outputfile):
-        f = open(outputfile, "wb")
+        f = open(outputfile, "w")
         try:
             converter.output(f)
         finally:

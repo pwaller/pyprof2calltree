@@ -183,8 +183,8 @@ class CalltreeConverter(object):
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('fn=%s %s:%d\n' % (
-                co_name, co_filename, co_firstlineno))
+            out_file.write('fl=%s\nfn=%s\n' % (
+                co_filename, co_name))
         else:
             out_file.write('fn=%s\n' % co_name)
 
@@ -214,8 +214,8 @@ class CalltreeConverter(object):
         code = subentry.code
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('cfn=%s %s:%d\n' % (
-                co_name, co_filename, co_firstlineno))
+            out_file.write('cfl=%s\ncfn=%s\n' %
+                (co_filename, co_name))
         else:
             out_file.write('cfn=%s\n' % co_name)
         out_file.write('calls=%d %d\n' % (call_info[0], co_firstlineno))

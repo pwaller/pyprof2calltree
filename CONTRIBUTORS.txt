@@ -41,3 +41,7 @@ In chronological order:
 
 * [Your name or handle] <[email or website]>
   * [Brief summary of your changes]
+
+## Thanks
+
+* Jon Dufresne <jon.dufresne@gmail.com> for prompting a new release

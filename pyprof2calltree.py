@@ -50,10 +50,16 @@ class Code(object):
 
 class Entry(object):
     def __repr__(self):
-        subentry_info = [(entry.code, info) for entry, info in self.calls]
         return '<Entry: %s, %s, %s, %s, %s, %s>' % (
             self.code, self.callcount, self.reccallcount, self.inlinetime,
-            self.totaltime, subentry_info
+            self.totaltime, self.calls
+        )
+
+class Subentry(object):
+    def __repr__(self):
+        return '<Subentry: %s, %s, %s, %s, %s>' % (
+            self.code, self.callcount, self.reccallcount, self.inlinetime,
+            self.totaltime
         )
 
 def is_basestring(s):
@@ -101,7 +107,11 @@ def pstats2entries(data):
         entry_label = cProfile.label(entry.code)
         entry_callers = allcallers.get(entry_label, [])
         for entry_caller, call_info in entry_callers:
-            entries[entry_caller].calls.append((entry, call_info))
+            subentry = Subentry()
+            subentry.code = entry.code
+            subentry.callcount, subentry.reccallcount, subentry.inlinetime, \
+                subentry.totaltime = call_info
+            entries[entry_caller].calls.append(subentry)
 
     return list(entries.values())
 
@@ -203,31 +213,27 @@ class CalltreeConverter(object):
 
         # recursive calls are counted in entry.calls
         if entry.calls:
-            calls = entry.calls
-        else:
-            calls = []
+            if is_basestring(code):
+                lineno = 0
+            else:
+                lineno = code.co_firstlineno
 
-        if is_basestring(code):
-            lineno = 0
-        else:
-            lineno = code.co_firstlineno
+            for subentry in entry.calls:
+                self._subentry(lineno, subentry.code, subentry.callcount,
+                               int(subentry.totaltime * 1000))
 
-        for subentry, call_info in calls:
-            self._subentry(lineno, subentry, call_info)
         out_file.write('\n')
 
-    def _subentry(self, lineno, subentry, call_info):
+    def _subentry(self, lineno, code, callcount, totaltime):
         out_file = self.out_file
-        code = subentry.code
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         if co_filename != '~' and co_firstlineno != 0:
             out_file.write('cfl=%s\ncfn=%s\n' %
                 (co_filename, co_name))
         else:
             out_file.write('cfn=%s\n' % co_name)
-        out_file.write('calls=%d %d\n' % (call_info[0], co_firstlineno))
+        out_file.write('calls=%d %d\n' % (callcount, co_firstlineno))
 
-        totaltime = int(call_info[3] * 1000)
         out_file.write('%d %d\n' % (lineno, totaltime))
 
 def main():

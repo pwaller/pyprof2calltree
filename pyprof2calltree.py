@@ -45,6 +45,8 @@ from collections import defaultdict
 
 __all__ = ['convert', 'visualize', 'CalltreeConverter']
 
+SCALE = 1e9
+
 class Code(object):
     def __repr__(self):
         return '<Code: %s, %s, %s>' % (self.co_filename, self.co_firstlineno,
@@ -166,7 +168,8 @@ class CalltreeConverter(object):
     def output(self, out_file):
         """Write the converted entries to out_file"""
         self.out_file = out_file
-        out_file.write('events: Ticks\n')
+        out_file.write('event: ns : Nanoseconds\n')
+        out_file.write('events: ns\n')
         self._print_summary()
         for entry in self.entries:
             self._entry(entry)
@@ -211,7 +214,7 @@ class CalltreeConverter(object):
     def _print_summary(self):
         max_cost = 0
         for entry in self.entries:
-            totaltime = int(entry.totaltime * 1000)
+            totaltime = int(entry.totaltime * SCALE)
             max_cost = max(max_cost, totaltime)
         # Version 0.7.4 of kcachegrind appears to ignore the summary line and
         # calculate the total cost by summing the exclusive cost of all
@@ -232,7 +235,7 @@ class CalltreeConverter(object):
             assert munged_name == co_name
             out_file.write('fn=%s\n' % co_name)
 
-        inlinetime = int(entry.inlinetime * 1000)
+        inlinetime = int(entry.inlinetime * SCALE)
         if is_basestring(code):
             out_file.write('0  %s\n' % inlinetime)
         else:
@@ -247,7 +250,7 @@ class CalltreeConverter(object):
 
             for subentry in entry.calls:
                 self._subentry(lineno, subentry.code, subentry.callcount,
-                               int(subentry.totaltime * 1000))
+                               int(subentry.totaltime * SCALE))
 
         out_file.write('\n')
 

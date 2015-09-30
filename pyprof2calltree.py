@@ -44,10 +44,17 @@ import tempfile
 __all__ = ['convert', 'visualize', 'CalltreeConverter']
 
 class Code(object):
-    pass
+    def __repr__(self):
+        return '<Code: %s, %s, %s>' % (self.co_filename, self.co_firstlineno,
+                                       self.co_name)
 
 class Entry(object):
-    pass
+    def __repr__(self):
+        subentry_info = [(entry.code, info) for entry, info in self.calls]
+        return '<Entry: %s, %s, %s, %s, %s, %s>' % (
+            self.code, self.callcount, self.reccallcount, self.inlinetime,
+            self.totaltime, subentry_info
+        )
 
 def is_basestring(s):
     try:

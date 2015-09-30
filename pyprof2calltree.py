@@ -41,6 +41,8 @@ import subprocess
 import sys
 import tempfile
 
+from collections import defaultdict
+
 __all__ = ['convert', 'visualize', 'CalltreeConverter']
 
 class Code(object):
@@ -140,6 +142,26 @@ class CalltreeConverter(object):
             # assume this are direct cProfile entries
             self.entries = profiling_data
         self.out_file = None
+        self._code_by_position = defaultdict(set)
+        self._populate_code_by_position()
+
+    def _populate_code_by_position(self):
+        for entry in self.entries:
+            self._add_code_by_position(entry.code)
+            if not entry.calls:
+                continue
+            for subentry in entry.calls:
+                self._add_code_by_position(subentry.code)
+
+    def _add_code_by_position(self, code):
+        co_filename, _, co_name = cProfile.label(code)
+        self._code_by_position[(co_filename, co_name)].add(code)
+
+    def munged_function_name(self, code):
+        co_filename, co_firstlineno, co_name = cProfile.label(code)
+        if len(self._code_by_position[(co_filename, co_name)]) == 1:
+            return co_name
+        return "%s:%d" % (co_name, co_firstlineno)
 
     def output(self, out_file):
         """Write the converted entries to out_file"""
@@ -199,10 +221,12 @@ class CalltreeConverter(object):
         code = entry.code
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
+        munged_name = self.munged_function_name(code)
         if co_filename != '~' and co_firstlineno != 0:
             out_file.write('fl=%s\nfn=%s\n' % (
-                co_filename, co_name))
+                co_filename, munged_name))
         else:
+            assert munged_name == co_name
             out_file.write('fn=%s\n' % co_name)
 
         inlinetime = int(entry.inlinetime * 1000)
@@ -227,10 +251,12 @@ class CalltreeConverter(object):
     def _subentry(self, lineno, code, callcount, totaltime):
         out_file = self.out_file
         co_filename, co_firstlineno, co_name = cProfile.label(code)
+        munged_name = self.munged_function_name(code)
         if co_filename != '~' and co_firstlineno != 0:
             out_file.write('cfl=%s\ncfn=%s\n' %
-                (co_filename, co_name))
+                           (co_filename, munged_name))
         else:
+            assert munged_name == co_name
             out_file.write('cfn=%s\n' % co_name)
         out_file.write('calls=%d %d\n' % (callcount, co_firstlineno))
 

@@ -213,6 +213,9 @@ class CalltreeConverter(object):
         for entry in self.entries:
             totaltime = int(entry.totaltime * 1000)
             max_cost = max(max_cost, totaltime)
+        # Version 0.7.4 of kcachegrind appears to ignore the summary line and
+        # calculate the total cost by summing the exclusive cost of all
+        # functions, but it doesn't hurt to output it anyway.
         self.out_file.write('summary: %d\n' % (max_cost,))
 
     def _entry(self, entry):

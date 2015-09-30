@@ -113,8 +113,11 @@ def pstats2entries(data):
         for entry_caller, call_info in entry_callers:
             subentry = Subentry()
             subentry.code = entry.code
-            subentry.callcount, subentry.reccallcount, subentry.inlinetime, \
-                subentry.totaltime = call_info
+            cc, nc, tt, ct = call_info
+            subentry.callcount = cc
+            subentry.reccallcount = nc - cc
+            subentry.inlinetime = tt
+            subentry.totaltime = ct
             entries[entry_caller].calls.append(subentry)
 
     return list(entries.values())

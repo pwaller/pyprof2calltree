@@ -35,6 +35,7 @@ setup(
     license='BSD',
     py_modules = ['pyprof2calltree'],
     zip_safe=True,
+    test_suite='tests',
     entry_points = {
         'setuptools.installation': [
             'eggsecutable = pyprof2calltree:main',

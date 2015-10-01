@@ -131,6 +131,10 @@ def is_installed(prog):
     return retcode == 0
 
 
+def _entry_sort_key(entry):
+    return cProfile.label(entry.code)
+
+
 KCACHEGRIND_EXECUTABLES = ["kcachegrind", "qcachegrind"]
 
 class CalltreeConverter(object):
@@ -174,7 +178,7 @@ class CalltreeConverter(object):
         out_file.write('event: ns : Nanoseconds\n')
         out_file.write('events: ns\n')
         self._print_summary()
-        for entry in self.entries:
+        for entry in sorted(self.entries, key=_entry_sort_key):
             self._entry(entry)
 
     def visualize(self):
@@ -231,28 +235,15 @@ class CalltreeConverter(object):
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         munged_name = self.munged_function_name(code)
-        if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('fl=%s\nfn=%s\n' % (
-                co_filename, munged_name))
-        else:
-            assert munged_name == co_name
-            out_file.write('fn=%s\n' % co_name)
+        out_file.write('fl=%s\nfn=%s\n' % (co_filename, munged_name))
 
         inlinetime = int(entry.inlinetime * SCALE)
-        if is_basestring(code):
-            out_file.write('0  %s\n' % inlinetime)
-        else:
-            out_file.write('%d %d\n' % (code.co_firstlineno, inlinetime))
+        out_file.write('%d %d\n' % (co_firstlineno, inlinetime))
 
         # recursive calls are counted in entry.calls
         if entry.calls:
-            if is_basestring(code):
-                lineno = 0
-            else:
-                lineno = code.co_firstlineno
-
-            for subentry in entry.calls:
-                self._subentry(lineno, subentry.code, subentry.callcount,
+            for subentry in sorted(entry.calls, key=_entry_sort_key):
+                self._subentry(co_firstlineno, subentry.code, subentry.callcount,
                                int(subentry.totaltime * SCALE))
 
         out_file.write('\n')
@@ -261,14 +252,8 @@ class CalltreeConverter(object):
         out_file = self.out_file
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         munged_name = self.munged_function_name(code)
-        if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('cfl=%s\ncfn=%s\n' %
-                           (co_filename, munged_name))
-        else:
-            assert munged_name == co_name
-            out_file.write('cfn=%s\n' % co_name)
+        out_file.write('cfl=%s\ncfn=%s\n' % (co_filename, munged_name))
         out_file.write('calls=%d %d\n' % (callcount, co_firstlineno))
-
         out_file.write('%d %d\n' % (lineno, totaltime))
 
 def main():

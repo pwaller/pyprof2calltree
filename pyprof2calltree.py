@@ -48,11 +48,24 @@ __all__ = ['convert', 'visualize', 'CalltreeConverter']
 SCALE = 1e9
 
 class Code(object):
+    def __init__(self, filename, firstlineno, name):
+        self.co_filename = filename
+        self.co_firstlineno = firstlineno
+        self.co_name = name
+
     def __repr__(self):
         return '<Code: %s, %s, %s>' % (self.co_filename, self.co_firstlineno,
                                        self.co_name)
 
 class Entry(object):
+    def __init__(self, code, callcount, reccallcount, inlinetime, totaltime, calls):
+        self.code = code
+        self.callcount = callcount
+        self.reccallcount = reccallcount
+        self.inlinetime = inlinetime
+        self.totaltime = totaltime
+        self.calls = calls
+
     def __repr__(self):
         return '<Entry: %s, %s, %s, %s, %s, %s>' % (
             self.code, self.callcount, self.reccallcount, self.inlinetime,
@@ -60,6 +73,13 @@ class Entry(object):
         )
 
 class Subentry(object):
+    def __init__(self, code, callcount, reccallcount, inlinetime, totaltime):
+        self.code = code
+        self.callcount = callcount
+        self.reccallcount = reccallcount
+        self.inlinetime = inlinetime
+        self.totaltime = totaltime
+
     def __repr__(self):
         return '<Subentry: %s, %s, %s, %s, %s>' % (
             self.code, self.callcount, self.reccallcount, self.inlinetime,
@@ -77,30 +97,24 @@ def is_basestring(s):
 
 
 def pstats2entries(data):
-    """Helper to convert serialized pstats back to a list of raw entries
+    """Helper to convert serialized pstats back to a list of raw entries.
 
     Converse operation of cProfile.Profile.snapshot_stats()
     """
+    # Each entry's key is a tuple of (filename, line number, function name)
     entries = dict()
     allcallers = dict()
 
     # first pass over stats to build the list of entry instances
     for code_info, call_info in list(data.stats.items()):
         # build a fake code object
-        code = Code()
-        code.co_filename, code.co_firstlineno, code.co_name = code_info
+        code = Code(*code_info)
 
-        # build a fake entry object
+        # build a fake entry object.  entry.calls will be filled during the
+        # second pass over stats
         cc, nc, tt, ct, callers = call_info
-        entry = Entry()
-        entry.code = code
-        entry.callcount = cc
-        entry.reccallcount = nc - cc
-        entry.inlinetime = tt
-        entry.totaltime = ct
-
-        # to be filled during the second pass over stats
-        entry.calls = list()
+        entry = Entry(code, callcount=cc, reccallcount=nc - cc, inlinetime=tt,
+                      totaltime=ct, calls=list())
 
         # collect the new entry
         entries[code_info] = entry
@@ -111,13 +125,10 @@ def pstats2entries(data):
         entry_label = cProfile.label(entry.code)
         entry_callers = allcallers.get(entry_label, [])
         for entry_caller, call_info in entry_callers:
-            subentry = Subentry()
-            subentry.code = entry.code
             cc, nc, tt, ct = call_info
-            subentry.callcount = cc
-            subentry.reccallcount = nc - cc
-            subentry.inlinetime = tt
-            subentry.totaltime = ct
+            subentry = Subentry(entry.code, callcount=cc, reccallcount=nc - cc,
+                                inlinetime=tt, totaltime=ct)
+            # entry_caller has the same form as code_info
             entries[entry_caller].calls.append(subentry)
 
     return list(entries.values())
@@ -177,9 +188,9 @@ class CalltreeConverter(object):
         self.out_file = out_file
         out_file.write('event: ns : Nanoseconds\n')
         out_file.write('events: ns\n')
-        self._print_summary()
+        self._output_summary()
         for entry in sorted(self.entries, key=_entry_sort_key):
-            self._entry(entry)
+            self._output_entry(entry)
 
     def visualize(self):
         """Launch kcachegrind on the converted entries.
@@ -218,7 +229,7 @@ class CalltreeConverter(object):
                 os.remove(outfile)
                 self.out_file = None
 
-    def _print_summary(self):
+    def _output_summary(self):
         max_cost = 0
         for entry in self.entries:
             totaltime = int(entry.totaltime * SCALE)
@@ -228,7 +239,7 @@ class CalltreeConverter(object):
         # functions, but it doesn't hurt to output it anyway.
         self.out_file.write('summary: %d\n' % (max_cost,))
 
-    def _entry(self, entry):
+    def _output_entry(self, entry):
         out_file = self.out_file
 
         code = entry.code
@@ -243,12 +254,13 @@ class CalltreeConverter(object):
         # recursive calls are counted in entry.calls
         if entry.calls:
             for subentry in sorted(entry.calls, key=_entry_sort_key):
-                self._subentry(co_firstlineno, subentry.code, subentry.callcount,
-                               int(subentry.totaltime * SCALE))
+                self._output_subentry(co_firstlineno, subentry.code,
+                                      subentry.callcount,
+                                      int(subentry.totaltime * SCALE))
 
         out_file.write('\n')
 
-    def _subentry(self, lineno, code, callcount, totaltime):
+    def _output_subentry(self, lineno, code, callcount, totaltime):
         out_file = self.out_file
         co_filename, co_firstlineno, co_name = cProfile.label(code)
         munged_name = self.munged_function_name(code)

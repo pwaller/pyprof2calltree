@@ -41,13 +41,50 @@ import subprocess
 import sys
 import tempfile
 
+from collections import defaultdict
+
 __all__ = ['convert', 'visualize', 'CalltreeConverter']
 
+SCALE = 1e9
+
 class Code(object):
-    pass
+    def __init__(self, filename, firstlineno, name):
+        self.co_filename = filename
+        self.co_firstlineno = firstlineno
+        self.co_name = name
+
+    def __repr__(self):
+        return '<Code: %s, %s, %s>' % (self.co_filename, self.co_firstlineno,
+                                       self.co_name)
 
 class Entry(object):
-    pass
+    def __init__(self, code, callcount, reccallcount, inlinetime, totaltime, calls):
+        self.code = code
+        self.callcount = callcount
+        self.reccallcount = reccallcount
+        self.inlinetime = inlinetime
+        self.totaltime = totaltime
+        self.calls = calls
+
+    def __repr__(self):
+        return '<Entry: %s, %s, %s, %s, %s, %s>' % (
+            self.code, self.callcount, self.reccallcount, self.inlinetime,
+            self.totaltime, self.calls
+        )
+
+class Subentry(object):
+    def __init__(self, code, callcount, reccallcount, inlinetime, totaltime):
+        self.code = code
+        self.callcount = callcount
+        self.reccallcount = reccallcount
+        self.inlinetime = inlinetime
+        self.totaltime = totaltime
+
+    def __repr__(self):
+        return '<Subentry: %s, %s, %s, %s, %s>' % (
+            self.code, self.callcount, self.reccallcount, self.inlinetime,
+            self.totaltime
+        )
 
 def is_basestring(s):
     try:
@@ -60,30 +97,24 @@ def is_basestring(s):
 
 
 def pstats2entries(data):
-    """Helper to convert serialized pstats back to a list of raw entries
+    """Helper to convert serialized pstats back to a list of raw entries.
 
     Converse operation of cProfile.Profile.snapshot_stats()
     """
+    # Each entry's key is a tuple of (filename, line number, function name)
     entries = dict()
     allcallers = dict()
 
     # first pass over stats to build the list of entry instances
     for code_info, call_info in list(data.stats.items()):
         # build a fake code object
-        code = Code()
-        code.co_filename, code.co_firstlineno, code.co_name = code_info
+        code = Code(*code_info)
 
-        # build a fake entry object
+        # build a fake entry object.  entry.calls will be filled during the
+        # second pass over stats
         cc, nc, tt, ct, callers = call_info
-        entry = Entry()
-        entry.code = code
-        entry.callcount = cc
-        entry.reccallcount = nc - cc
-        entry.inlinetime = tt
-        entry.totaltime = ct
-
-        # to be filled during the second pass over stats
-        entry.calls = list()
+        entry = Entry(code, callcount=cc, reccallcount=nc - cc, inlinetime=tt,
+                      totaltime=ct, calls=list())
 
         # collect the new entry
         entries[code_info] = entry
@@ -94,7 +125,11 @@ def pstats2entries(data):
         entry_label = cProfile.label(entry.code)
         entry_callers = allcallers.get(entry_label, [])
         for entry_caller, call_info in entry_callers:
-            entries[entry_caller].calls.append((entry, call_info))
+            cc, nc, tt, ct = call_info
+            subentry = Subentry(entry.code, callcount=cc, reccallcount=nc - cc,
+                                inlinetime=tt, totaltime=ct)
+            # entry_caller has the same form as code_info
+            entries[entry_caller].calls.append(subentry)
 
     return list(entries.values())
 
@@ -105,6 +140,10 @@ def is_installed(prog):
     retcode = subprocess.call(['which', prog], stdout=devnull)
     devnull.close()
     return retcode == 0
+
+
+def _entry_sort_key(entry):
+    return cProfile.label(entry.code)
 
 
 KCACHEGRIND_EXECUTABLES = ["kcachegrind", "qcachegrind"]
@@ -123,14 +162,35 @@ class CalltreeConverter(object):
             # assume this are direct cProfile entries
             self.entries = profiling_data
         self.out_file = None
+        self._code_by_position = defaultdict(set)
+        self._populate_code_by_position()
+
+    def _populate_code_by_position(self):
+        for entry in self.entries:
+            self._add_code_by_position(entry.code)
+            if not entry.calls:
+                continue
+            for subentry in entry.calls:
+                self._add_code_by_position(subentry.code)
+
+    def _add_code_by_position(self, code):
+        co_filename, _, co_name = cProfile.label(code)
+        self._code_by_position[(co_filename, co_name)].add(code)
+
+    def munged_function_name(self, code):
+        co_filename, co_firstlineno, co_name = cProfile.label(code)
+        if len(self._code_by_position[(co_filename, co_name)]) == 1:
+            return co_name
+        return "%s:%d" % (co_name, co_firstlineno)
 
     def output(self, out_file):
         """Write the converted entries to out_file"""
         self.out_file = out_file
-        out_file.write('events: Ticks\n')
-        self._print_summary()
-        for entry in self.entries:
-            self._entry(entry)
+        out_file.write('event: ns : Nanoseconds\n')
+        out_file.write('events: ns\n')
+        self._output_summary()
+        for entry in sorted(self.entries, key=_entry_sort_key):
+            self._output_entry(entry)
 
     def visualize(self):
         """Launch kcachegrind on the converted entries.
@@ -169,58 +229,43 @@ class CalltreeConverter(object):
                 os.remove(outfile)
                 self.out_file = None
 
-    def _print_summary(self):
+    def _output_summary(self):
         max_cost = 0
         for entry in self.entries:
-            totaltime = int(entry.totaltime * 1000)
+            totaltime = int(entry.totaltime * SCALE)
             max_cost = max(max_cost, totaltime)
+        # Version 0.7.4 of kcachegrind appears to ignore the summary line and
+        # calculate the total cost by summing the exclusive cost of all
+        # functions, but it doesn't hurt to output it anyway.
         self.out_file.write('summary: %d\n' % (max_cost,))
 
-    def _entry(self, entry):
+    def _output_entry(self, entry):
         out_file = self.out_file
 
         code = entry.code
 
         co_filename, co_firstlineno, co_name = cProfile.label(code)
-        if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('fl=%s\nfn=%s\n' % (
-                co_filename, co_name))
-        else:
-            out_file.write('fn=%s\n' % co_name)
+        munged_name = self.munged_function_name(code)
+        out_file.write('fl=%s\nfn=%s\n' % (co_filename, munged_name))
 
-        inlinetime = int(entry.inlinetime * 1000)
-        if is_basestring(code):
-            out_file.write('0  %s\n' % inlinetime)
-        else:
-            out_file.write('%d %d\n' % (code.co_firstlineno, inlinetime))
+        inlinetime = int(entry.inlinetime * SCALE)
+        out_file.write('%d %d\n' % (co_firstlineno, inlinetime))
 
         # recursive calls are counted in entry.calls
         if entry.calls:
-            calls = entry.calls
-        else:
-            calls = []
+            for subentry in sorted(entry.calls, key=_entry_sort_key):
+                self._output_subentry(co_firstlineno, subentry.code,
+                                      subentry.callcount,
+                                      int(subentry.totaltime * SCALE))
 
-        if is_basestring(code):
-            lineno = 0
-        else:
-            lineno = code.co_firstlineno
-
-        for subentry, call_info in calls:
-            self._subentry(lineno, subentry, call_info)
         out_file.write('\n')
 
-    def _subentry(self, lineno, subentry, call_info):
+    def _output_subentry(self, lineno, code, callcount, totaltime):
         out_file = self.out_file
-        code = subentry.code
         co_filename, co_firstlineno, co_name = cProfile.label(code)
-        if co_filename != '~' and co_firstlineno != 0:
-            out_file.write('cfl=%s\ncfn=%s\n' %
-                (co_filename, co_name))
-        else:
-            out_file.write('cfn=%s\n' % co_name)
-        out_file.write('calls=%d %d\n' % (call_info[0], co_firstlineno))
-
-        totaltime = int(call_info[3] * 1000)
+        munged_name = self.munged_function_name(code)
+        out_file.write('cfl=%s\ncfn=%s\n' % (co_filename, munged_name))
+        out_file.write('calls=%d %d\n' % (callcount, co_firstlineno))
         out_file.write('%d %d\n' % (lineno, totaltime))
 
 def main():

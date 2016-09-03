@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '1.3.2'
+version = '1.4.0'
 classifiers = """\
 Development Status :: 5 - Production/Stable
 Environment :: Console

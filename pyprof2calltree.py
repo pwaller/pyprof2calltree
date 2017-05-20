@@ -125,14 +125,35 @@ def pstats2entries(data):
         entry_label = cProfile.label(entry.code)
         entry_callers = allcallers.get(entry_label, [])
         for entry_caller, call_info in entry_callers:
-            cc, nc, tt, ct = call_info
-            subentry = Subentry(entry.code, callcount=cc, reccallcount=nc - cc,
-                                inlinetime=tt, totaltime=ct)
-            # entry_caller has the same form as code_info
-            entries[entry_caller].calls.append(subentry)
+            if isinstance(call_info, tuple):
+                for i in xrange(0, len(call_info), 4):
+                    cc, nc, tt, ct = call_info[i:i+4]
+                    subentry = Subentry(entry.code, callcount=cc,
+                                        reccallcount=nc - cc,
+                                        inlinetime=tt, totaltime=ct)
+                    # entry_caller has the same form as code_info
+                    entries[entry_caller].calls.append(subentry)
+            else:
+                cc = call_info
+                ct = (ratio(cc, entry.callcount + entry.reccallcount) *
+                      entry.totaltime)
+                subentry = Subentry(entry.code, callcount=cc, totaltime=ct,
+                                    reccallcount=0, inlinetime=0.0)
+                entries[entry_caller].calls.append(subentry)
 
     return list(entries.values())
 
+
+def ratio(n, d):
+    try:
+        ratio = float(n) / float(d)
+    except ZeroDivisionError:
+        return 1.0
+    if ratio < 0.0:
+        return 0.0
+    if ratio > 1.0:
+        return 1.0
+    return ratio
 
 def is_installed(prog):
     """Return whether or not a given executable is installed on the machine."""

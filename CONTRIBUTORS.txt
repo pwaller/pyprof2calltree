@@ -26,22 +26,25 @@ In chronological order:
 
 * Steven Maude
   * Breaking things, documentation
-  
+
 * Lukas Graf <lukas.graf@4teamwork.ch>
   * Python 3.x compatibility
-  
+
 * Jamie Wong <http://jamie-wong.com>
   * qcachegrind support
 
 * Yury V. Zaytsev <yury@shurup.com>
   * Bugfixes
-  
+
 * Michael Droettboom <mdroe@stsci.edu>
   * Source code display support
 
 * Zev Benjamin <zev@mit.edu>
   * Support for multiple functions with the same name
   * Tests
+
+* Daniel Alvarez <dani001@gmail.com>
+  * Support for pstats files produced by Python profile module
 
 * [Your name or handle] <[email or website]>
   * [Brief summary of your changes]

@@ -79,7 +79,7 @@ or with the ipython_::
 
 Change log
 ==========
-
+ - 1.4.1 - 2017-03-01: Support for pstats files produced by profile Python module
  - 1.4.0 - 2016-09-03: Support multiple functions with the same name, tick unit from millis to nanos, tests added (#15)
  - 1.3.2 - 2014-07-05: Bugfix: correct source file paths (#12)
  - 1.3.1 - 2013-11-27: Bugfix for broken output writing on python 3 (#8)

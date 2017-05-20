@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '1.4.0'
+version = '1.4.1'
 classifiers = """\
 Development Status :: 5 - Production/Stable
 Environment :: Console
@@ -35,7 +35,7 @@ setup(
     license='BSD',
     py_modules = ['pyprof2calltree'],
     zip_safe=True,
-    test_suite='tests',
+    test_suite='test',
     entry_points = {
         'setuptools.installation': [
             'eggsecutable = pyprof2calltree:main',

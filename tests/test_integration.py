@@ -3,7 +3,10 @@ import pstats
 import unittest
 
 from .profile_code import top, expected_output
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 from pyprof2calltree import CalltreeConverter
 
 class MockTimeProfile(cProfile.Profile):

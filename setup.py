@@ -5,7 +5,7 @@ classifiers = """\
 Development Status :: 5 - Production/Stable
 Environment :: Console
 Environment :: X11 Applications :: KDE
-License :: OSI Approved :: BSD License
+License :: OSI Approved :: MIT License
 Operating System :: POSIX
 Operating System :: Unix
 Programming Language :: Python :: 2.5

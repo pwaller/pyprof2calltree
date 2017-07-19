@@ -26,16 +26,16 @@ In chronological order:
 
 * Steven Maude
   * Breaking things, documentation
-  
+
 * Lukas Graf <lukas.graf@4teamwork.ch>
   * Python 3.x compatibility
-  
+
 * Jamie Wong <http://jamie-wong.com>
   * qcachegrind support
 
 * Yury V. Zaytsev <yury@shurup.com>
   * Bugfixes
-  
+
 * Michael Droettboom <mdroe@stsci.edu>
   * Source code display support
 
@@ -49,3 +49,4 @@ In chronological order:
 ## Thanks
 
 * Jon Dufresne <jon.dufresne@gmail.com> for prompting a new release
+* Uwe L. Korn for pointing out mismatch in licensing

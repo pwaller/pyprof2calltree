@@ -137,7 +137,14 @@ def pstats2entries(data):
 def is_installed(prog):
     """Return whether or not a given executable is installed on the machine."""
     devnull = open(os.devnull, 'w')
-    retcode = subprocess.call(['which', prog], stdout=devnull)
+    # if where or which isn't located, a "FileNotFound" error will occur.
+    # in this case, we should catch it and return a null value so that:
+    #   if available_cmd is None:
+    # can trigger later on. But this is a quick fix to get it to work on Windows.
+    if os.name == 'nt':
+        retcode = subprocess.call(['where', prog], stdout=devnull)
+    else:
+        retcode = subprocess.call(['which', prog], stdout=devnull)
     devnull.close()
     return retcode == 0
 

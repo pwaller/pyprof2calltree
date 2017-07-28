@@ -80,8 +80,9 @@ or with the ipython_::
 Change log
 ==========
 
- - 1.4.2 - 2017-07-19: No feature or bug fixes, just license clarification (#20).
- - 1.4.1 - 2017-05-20: No feature or bug fixes, just test distribution (#17).
+ - 1.4.3 - 2017-07-28: Windows support (fixed is_installed check - #21)
+ - 1.4.2 - 2017-07-19: No feature or bug fixes, just license clarification (#20)
+ - 1.4.1 - 2017-05-20: No feature or bug fixes, just test distribution (#17)
  - 1.4.0 - 2016-09-03: Support multiple functions with the same name, tick unit from millis to nanos, tests added (#15)
  - 1.3.2 - 2014-07-05: Bugfix: correct source file paths (#12)
  - 1.3.1 - 2013-11-27: Bugfix for broken output writing on python 3 (#8)

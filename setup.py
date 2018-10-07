@@ -31,7 +31,7 @@ setup(
     author_email='olivier.grisel@ensta.org',
     maintainer='Peter Waller',
     maintainer_email='p@pwaller.net',
-    url='http://github.com/pwaller/pyprof2calltree/',
+    url='https://github.com/pwaller/pyprof2calltree/',
     license='BSD',
     py_modules = ['pyprof2calltree'],
     zip_safe=True,

@@ -6,14 +6,14 @@ python module with the kcachegrind_ (screenshots_) graphical calltree
 analyser.
 
 This is a rebranding of the venerable
-http://www.gnome.org/~johan/lsprofcalltree.py script by David Allouche
+https://people.gnome.org/~johan/lsprofcalltree.py script by David Allouche
 et Al. It aims at making it easier to distribute (e.g. through pypi)
 and behave more like the scripts of the debian kcachegrind-converters_
 package. The final goal is to make it part of the official upstream
 kdesdk_ package.
 
 .. _kcachegrind: http://kcachegrind.sourceforge.net
-.. _kcachegrind-converters: http://packages.debian.org/en/stable/kcachegrind-converters
+.. _kcachegrind-converters: https://packages.debian.org/en/stable/kcachegrind-converters
 .. _kdesdk: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
 .. _screenshots: http://images.google.fr/images?q=kcachegrind
 
@@ -74,7 +74,7 @@ or with the ipython_::
   >>> results = %prun -r ElementTree.fromstring(xml_content)
   >>> visualize(results)
 
-.. _ipython: http://ipython.scipy.org
+.. _ipython: https://ipython.org/
 
 
 Change log

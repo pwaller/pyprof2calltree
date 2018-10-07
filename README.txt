@@ -2,7 +2,7 @@ Overview
 ========
 
 Script to help visualize profiling data collected with the cProfile
-python module with the kcachegrind_ (screenshots_) graphical calltree
+Python module with the kcachegrind_ (screenshots_) graphical calltree
 analyser.
 
 This is a rebranding of the venerable
@@ -30,9 +30,9 @@ Upon installation you should have a `pyprof2calltree` script in your path::
     -o OUTFILE, --outfile=OUTFILE
                           Save calltree stats to <outfile>
     -i INFILE, --infile=INFILE
-                          Read python stats from <infile>
+                          Read Python stats from <infile>
     -r SCRIPT, --run-script=SCRIPT
-                          Name of the python script to run to collect profiling
+                          Name of the Python script to run to collect profiling
                           data
     -k, --kcachegrind     Run the kcachegrind tool on the converted data
 
@@ -40,7 +40,7 @@ Upon installation you should have a `pyprof2calltree` script in your path::
 Python shell usage
 ==================
 
-`pyprof2calltree` is also best used from an interactive python shell such as
+`pyprof2calltree` is also best used from an interactive Python shell such as
 the default shell. For instance let us profile XML parsing::
 
   >>> from xml.etree import ElementTree
@@ -85,7 +85,7 @@ Change log
  - 1.4.1 - 2017-05-20: No feature or bug fixes, just test distribution (#17)
  - 1.4.0 - 2016-09-03: Support multiple functions with the same name, tick unit from millis to nanos, tests added (#15)
  - 1.3.2 - 2014-07-05: Bugfix: correct source file paths (#12)
- - 1.3.1 - 2013-11-27: Bugfix for broken output writing on python 3 (#8)
+ - 1.3.1 - 2013-11-27: Bugfix for broken output writing on Python 3 (#8)
  - 1.3.0 - 2013-11-19: qcachegrind support
  - 1.2.0 - 2013-11-09: Python 3 support
  - 1.1.1 - 2013-09-25: Miscellaneous bugfixes

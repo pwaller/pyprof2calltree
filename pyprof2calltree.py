@@ -287,9 +287,9 @@ def main():
     parser.add_option('-o', '--outfile', dest="outfile",
                       help="Save calltree stats to <outfile>", default=None)
     parser.add_option('-i', '--infile', dest="infile",
-                      help="Read python stats from <infile>", default=None)
+                      help="Read Python stats from <infile>", default=None)
     parser.add_option('-r', '--run-script', dest="script",
-                      help="Name of the python script to run to collect"
+                      help="Name of the Python script to run to collect"
                       " profiling data", default=None)
     parser.add_option('-k', '--kcachegrind', dest="kcachegrind",
                       help="Run the kcachegrind tool on the converted data",

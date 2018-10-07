@@ -2,7 +2,7 @@
 # Copyright (c) 2006-2008, David Allouche, Jp Calderone, Itamar Shtull-Trauring,
 # Johan Dahlin, Olivier Grisel <olivier.grisel@ensta.org>
 #
-# Send maintenance requests needing new pypi packages to:
+# Send maintenance requests needing new PyPI packages to:
 #   Peter Waller <p@pwaller.net>
 #   https://github.com/pwaller/pyprof2calltree
 #

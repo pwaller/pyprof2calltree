@@ -7,7 +7,7 @@ analyser.
 
 This is a rebranding of the venerable
 http://www.gnome.org/~johan/lsprofcalltree.py script by David Allouche
-et Al. It aims at making it easier to distribute (e.g. through pypi)
+et Al. It aims at making it easier to distribute (e.g. through PyPI)
 and behave more like the scripts of the debian kcachegrind-converters_
 package. The final goal is to make it part of the official upstream
 kdesdk_ package.

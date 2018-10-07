@@ -92,4 +92,3 @@ Change log
  - 1.1.0 - 2008-12-21: integrate fix in conversion by David Glick
  - 1.0.3 - 2008-10-16: fix typos in 1.0 release
  - 1.0 - 2008-10-16: initial release under the pyprof2calltree name
-

@@ -137,7 +137,7 @@ def pstats2entries(data):
 def is_installed(prog):
     """Return whether or not a given executable is installed on the machine."""
     devnull = open(os.devnull, 'w')
-    
+
     try:
         if os.name == 'nt':
             retcode = subprocess.call(['where', prog], stdout=devnull)
@@ -145,9 +145,9 @@ def is_installed(prog):
             retcode = subprocess.call(['which', prog], stdout=devnull)
     except FileNotFoundError:
         retcode = 1
-        
+
     devnull.close()
-        
+
     return retcode == 0
 
 

@@ -43,10 +43,15 @@ In chronological order:
   * Support for multiple functions with the same name
   * Tests
 
+* Jon Dufresne <jon.dufresne@gmail.com>
+  * A huge number of small fixes and consistency
+    improvements across code, docs and setup.py alike.
+
 * [Your name or handle] <[email or website]>
   * [Brief summary of your changes]
 
 ## Thanks
 
-* Jon Dufresne <jon.dufresne@gmail.com> for prompting a new release
+* Jon Dufresne <jon.dufresne@gmail.com> for prompting
+  a new release and many tidy up fixes!
 * Uwe L. Korn for pointing out mismatch in licensing

@@ -1,6 +1,0 @@
-syntax: glob
-
-*.pyc
-pyprof2calltree.egg-info/
-dist/
-build/

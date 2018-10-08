@@ -1,31 +1,6 @@
 from setuptools import setup
 
 version = '1.4.3'
-classifiers = """\
-Development Status :: 5 - Production/Stable
-Environment :: Console
-Environment :: X11 Applications :: KDE
-License :: OSI Approved :: MIT License
-Operating System :: POSIX
-Operating System :: Unix
-Programming Language :: Python
-Programming Language :: Python :: 2
-Programming Language :: Python :: 2.5
-Programming Language :: Python :: 2.6
-Programming Language :: Python :: 2.7
-Programming Language :: Python :: 3
-Programming Language :: Python :: 3.2
-Programming Language :: Python :: 3.3
-Programming Language :: Python :: 3.4
-Programming Language :: Python :: 3.5
-Programming Language :: Python :: 3.6
-Programming Language :: Python :: 3.7
-Topic :: Desktop Environment :: K Desktop Environment (KDE)
-Topic :: Software Development
-Topic :: Software Development :: Quality Assurance
-Topic :: System :: System Shells
-Topic :: Utilities
-"""
 
 setup(
     name='pyprof2calltree',
@@ -33,7 +8,31 @@ setup(
     description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
     long_description=open('README.rst').read(),
     keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
-    classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Environment :: X11 Applications :: KDE",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: POSIX",
+        "Operating System :: Unix",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.5",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Desktop Environment :: K Desktop Environment (KDE)",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: Quality Assurance",
+        "Topic :: System :: System Shells",
+        "Topic :: Utilities",
+    ],
     author='Olivier Grisel',
     author_email='olivier.grisel@ensta.org',
     maintainer='Peter Waller',

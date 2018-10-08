@@ -33,9 +33,9 @@ This script can either take raw cProfile.Profile.getstats() log entries or
 take a previously recorded instance of the pstats.Stats class.
 """
 
+import argparse
 import cProfile
 import errno
-import optparse
 import os
 import pstats
 import subprocess
@@ -286,30 +286,27 @@ class CalltreeConverter(object):
 def main():
     """Execute the converter using parameters provided on the command line"""
 
-    usage = ("%s [-k] [-o output_file_path] [-i input_file_path]"
-             " [-r scriptfile [args]]")
-    parser = optparse.OptionParser(usage=usage % sys.argv[0])
-    parser.allow_interspersed_args = False
-    parser.add_option('-o', '--outfile', dest="outfile",
-                      help="Save calltree stats to <outfile>", default=None)
-    parser.add_option('-i', '--infile', dest="infile",
-                      help="Read Python stats from <infile>", default=None)
-    parser.add_option('-r', '--run-script', dest="script",
-                      help="Name of the Python script to run to collect"
-                      " profiling data", default=None)
-    parser.add_option('-k', '--kcachegrind', dest="kcachegrind",
-                      help="Run the kcachegrind tool on the converted data",
-                      action="store_true")
-    options, args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', '--outfile',
+                        help="Save calltree stats to <outfile>")
+    parser.add_argument('-i', '--infile',
+                        help="Read Python stats from <infile>")
+    parser.add_argument('-k', '--kcachegrind',
+                        help="Run the kcachegrind tool on the converted data",
+                        action="store_true")
+    parser.add_argument('-r', '--run-script', nargs='+', dest='script',
+                        help="Name of the Python script to run to collect"
+                        " profiling data")
+    args = parser.parse_args()
 
-    outfile = options.outfile
+    outfile = args.outfile
 
-    if options.script is not None:
+    if args.script is not None:
         # collect profiling data by running the given script
 
-        sys.argv[:] = [options.script] + args
-        if not options.outfile:
-            outfile = '%s.log' % os.path.basename(options.script)
+        sys.argv[:] = args.script
+        if not args.outfile:
+            outfile = '%s.log' % os.path.basename(args.script[0])
 
         prof = cProfile.Profile()
 
@@ -326,30 +323,30 @@ def main():
         finally:
             kg = CalltreeConverter(pstats.Stats(prof))
 
-    elif options.infile is not None:
+    elif args.infile is not None:
         # use the profiling data from some input file
-        if not options.outfile:
-            outfile = '%s.log' % os.path.basename(options.infile)
+        if not args.outfile:
+            outfile = '%s.log' % os.path.basename(args.infile)
 
-        if options.infile == outfile:
+        if args.infile == outfile:
             # prevent name collisions by appending another extension
             outfile += ".log"
 
-        kg = CalltreeConverter(pstats.Stats(options.infile))
+        kg = CalltreeConverter(pstats.Stats(args.infile))
 
     else:
         # at least an input file or a script to run is required
         parser.print_usage()
         sys.exit(2)
 
-    if options.outfile is not None or not options.kcachegrind:
+    if args.outfile is not None or not args.kcachegrind:
         # user either explicitly required output file or requested by not
         # explicitly asking to launch kcachegrind
         sys.stderr.write("writing converted data to: %s\n" % outfile)
         with open(outfile, 'w') as f:
             kg.output(f)
 
-    if options.kcachegrind:
+    if args.kcachegrind:
         sys.stderr.write("launching kcachegrind\n")
         kg.visualize()
 

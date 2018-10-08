@@ -102,8 +102,8 @@ def pstats2entries(data):
     Converse operation of cProfile.Profile.snapshot_stats()
     """
     # Each entry's key is a tuple of (filename, line number, function name)
-    entries = dict()
-    allcallers = dict()
+    entries = {}
+    allcallers = {}
 
     # first pass over stats to build the list of entry instances
     for code_info, call_info in list(data.stats.items()):
@@ -114,7 +114,7 @@ def pstats2entries(data):
         # second pass over stats
         cc, nc, tt, ct, callers = call_info
         entry = Entry(code, callcount=cc, reccallcount=nc - cc, inlinetime=tt,
-                      totaltime=ct, calls=list())
+                      totaltime=ct, calls=[])
 
         # collect the new entry
         entries[code_info] = entry

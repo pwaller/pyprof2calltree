@@ -1,13 +1,21 @@
 import cProfile
 import pstats
+import sys
 import unittest
 
-from .profile_code import top, expected_output
+from .profile_code import top, expected_output_py2, expected_output_py3
 try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
 from pyprof2calltree import CalltreeConverter
+
+
+if sys.version_info < (3, 0):
+    expected_output = expected_output_py2
+else:
+    expected_output = expected_output_py3
+
 
 class MockTimeProfile(cProfile.Profile):
     def __init__(self):

@@ -2,7 +2,7 @@
 # Copyright (c) 2006-2008, David Allouche, Jp Calderone, Itamar Shtull-Trauring,
 # Johan Dahlin, Olivier Grisel <olivier.grisel@ensta.org>
 #
-# Send maintenance requests needing new pypi packages to:
+# Send maintenance requests needing new PyPI packages to:
 #   Peter Waller <p@pwaller.net>
 #   https://github.com/pwaller/pyprof2calltree
 #
@@ -137,7 +137,7 @@ def pstats2entries(data):
 def is_installed(prog):
     """Return whether or not a given executable is installed on the machine."""
     devnull = open(os.devnull, 'w')
-    
+
     try:
         if os.name == 'nt':
             retcode = subprocess.call(['where', prog], stdout=devnull)
@@ -145,9 +145,9 @@ def is_installed(prog):
             retcode = subprocess.call(['which', prog], stdout=devnull)
     except FileNotFoundError:
         retcode = 1
-        
+
     devnull.close()
-        
+
     return retcode == 0
 
 
@@ -287,9 +287,9 @@ def main():
     parser.add_option('-o', '--outfile', dest="outfile",
                       help="Save calltree stats to <outfile>", default=None)
     parser.add_option('-i', '--infile', dest="infile",
-                      help="Read python stats from <infile>", default=None)
+                      help="Read Python stats from <infile>", default=None)
     parser.add_option('-r', '--run-script', dest="script",
-                      help="Name of the python script to run to collect"
+                      help="Name of the Python script to run to collect"
                       " profiling data", default=None)
     parser.add_option('-k', '--kcachegrind', dest="kcachegrind",
                       help="Run the kcachegrind tool on the converted data",

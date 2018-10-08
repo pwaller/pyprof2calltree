@@ -22,7 +22,7 @@ In chronological order:
   * Fix in conversion algorithm
 
 * Peter Waller <p@pwaller.net>
-  * Taking over pypi maintainance
+  * Taking over PyPI maintainance
 
 * Steven Maude
   * Breaking things, documentation

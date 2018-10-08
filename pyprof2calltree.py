@@ -106,7 +106,7 @@ def pstats2entries(data):
     allcallers = dict()
 
     # first pass over stats to build the list of entry instances
-    for code_info, call_info in list(data.stats.items()):
+    for code_info, call_info in data.stats.items():
         # build a fake code object
         code = Code(*code_info)
 

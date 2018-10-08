@@ -4,6 +4,8 @@ cache: pip
 
 matrix:
   include:
+    - env: TOXENV=flake8
+    - env: TOXENV=isort
     - python: "2.7"
       env: TOXENV=py27
     - python: "3.4"

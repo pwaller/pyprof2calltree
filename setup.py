@@ -11,7 +11,9 @@ def readall(path):
 setup(
     name='pyprof2calltree',
     version=version,
-    description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
+    description=(
+        "Help visualize profiling data from cProfile with kcachegrind and qcachegrind"
+    ),
     long_description=readall('README.rst'),
     keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
     classifiers=[
@@ -45,10 +47,10 @@ setup(
     maintainer_email='p@pwaller.net',
     url='https://github.com/pwaller/pyprof2calltree/',
     license='MIT',
-    py_modules = ['pyprof2calltree'],
+    py_modules=['pyprof2calltree'],
     zip_safe=True,
     test_suite='test',
-    entry_points = {
+    entry_points={
         'setuptools.installation': [
             'eggsecutable = pyprof2calltree:main',
         ],

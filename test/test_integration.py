@@ -3,13 +3,14 @@ import pstats
 import sys
 import unittest
 
-from .profile_code import top, expected_output_py2, expected_output_py3
+from pyprof2calltree import CalltreeConverter
+
+from .profile_code import expected_output_py2, expected_output_py3, top
+
 try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
-from pyprof2calltree import CalltreeConverter
-
 
 if sys.version_info < (3, 0):
     expected_output = expected_output_py2
@@ -26,6 +27,7 @@ class MockTimeProfile(cProfile.Profile):
         now = self._mock_time
         self._mock_time += 1000
         return now
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):

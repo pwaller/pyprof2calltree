@@ -31,7 +31,7 @@ setup(
     name='pyprof2calltree',
     version=version,
     description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
     keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
     classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
     author='Olivier Grisel',

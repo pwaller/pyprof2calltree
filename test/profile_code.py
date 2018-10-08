@@ -36,7 +36,7 @@ class C2(object):
     def samename():
         pass
 
-expected_output = """event: ns : Nanoseconds
+expected_output_py2 = """event: ns : Nanoseconds
 events: ns
 summary: 59000
 fl=<filename>
@@ -123,4 +123,85 @@ fl=~
 fn=<range>
 0 1000
 
-""".replace('<filename>', top.__code__.co_filename)
+""".replace('<filename>', __file__)
+
+expected_output_py3 = """event: ns : Nanoseconds
+events: ns
+summary: 57000
+fl=<filename>
+fn=top
+3 6000
+cfl=<filename>
+cfn=mid1
+calls=1 10
+3 25000
+cfl=<filename>
+cfn=mid2
+calls=1 16
+3 3000
+cfl=<filename>
+cfn=mid3
+calls=1 22
+3 21000
+cfl=<filename>
+cfn=samename:30
+calls=1 30
+3 1000
+cfl=<filename>
+cfn=samename:35
+calls=1 35
+3 1000
+
+fl=<filename>
+fn=mid1
+10 8000
+cfl=<filename>
+cfn=mid2
+calls=5 16
+10 15000
+cfl=<filename>
+cfn=bot
+calls=2 19
+10 2000
+
+fl=<filename>
+fn=mid2
+16 12000
+cfl=<filename>
+cfn=bot
+calls=6 19
+16 6000
+
+fl=<filename>
+fn=bot
+19 8000
+
+fl=<filename>
+fn=mid3
+22 11000
+cfl=<filename>
+cfn=mid4
+calls=5 26
+22 19000
+
+fl=<filename>
+fn=mid4
+26 10000
+cfl=<filename>
+cfn=mid3
+calls=5 22
+26 17000
+
+fl=<filename>
+fn=samename:30
+30 1000
+
+fl=<filename>
+fn=samename:35
+35 1000
+
+fl=~
+fn=<method 'disable' of '_lsprof.Profiler' objects>
+0 1000
+
+""".replace('<filename>', __file__)

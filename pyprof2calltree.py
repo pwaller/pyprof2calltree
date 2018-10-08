@@ -34,18 +34,19 @@ take a previously recorded instance of the pstats.Stats class.
 """
 
 import cProfile
+import errno
 import optparse
 import os
 import pstats
 import subprocess
 import sys
 import tempfile
-
 from collections import defaultdict
 
 __all__ = ['convert', 'visualize', 'CalltreeConverter']
 
 SCALE = 1e9
+
 
 class Code(object):
     def __init__(self, filename, firstlineno, name):
@@ -56,6 +57,7 @@ class Code(object):
     def __repr__(self):
         return '<Code: %s, %s, %s>' % (self.co_filename, self.co_firstlineno,
                                        self.co_name)
+
 
 class Entry(object):
     def __init__(self, code, callcount, reccallcount, inlinetime, totaltime, calls):
@@ -72,6 +74,7 @@ class Entry(object):
             self.totaltime, self.calls
         )
 
+
 class Subentry(object):
     def __init__(self, code, callcount, reccallcount, inlinetime, totaltime):
         self.code = code
@@ -86,9 +89,10 @@ class Subentry(object):
             self.totaltime
         )
 
+
 def is_basestring(s):
     try:
-        u = unicode
+        unicode
         # Python 2.x
         return isinstance(s, basestring)
     except NameError:
@@ -142,7 +146,11 @@ def is_installed(prog):
                 retcode = subprocess.call(['where', prog], stdout=devnull)
             else:
                 retcode = subprocess.call(['which', prog], stdout=devnull)
-        except FileNotFoundError:
+        except OSError as e:
+            # If where or which doesn't exist, a "ENOENT" error will occur (The
+            # FileNotFoundError subclass on Python 3).
+            if e.errno != errno.ENOENT:
+                raise
             retcode = 1
 
     return retcode == 0
@@ -153,6 +161,7 @@ def _entry_sort_key(entry):
 
 
 KCACHEGRIND_EXECUTABLES = ["kcachegrind", "qcachegrind"]
+
 
 class CalltreeConverter(object):
     """Convert raw cProfile or pstats data to the calltree format"""
@@ -223,7 +232,7 @@ class CalltreeConverter(object):
 
         if available_cmd is None:
             sys.stderr.write("Could not find kcachegrind. Tried: %s\n" %
-                    ", ".join(KCACHEGRIND_EXECUTABLES))
+                             ", ".join(KCACHEGRIND_EXECUTABLES))
             return
 
         try:
@@ -273,6 +282,7 @@ class CalltreeConverter(object):
         out_file.write('calls=%d %d\n' % (callcount, co_firstlineno))
         out_file.write('%d %d\n' % (lineno, totaltime))
 
+
 def main():
     """Execute the converter using parameters provided on the command line"""
 
@@ -291,7 +301,6 @@ def main():
                       help="Run the kcachegrind tool on the converted data",
                       action="store_true")
     options, args = parser.parse_args()
-
 
     outfile = options.outfile
 
@@ -355,6 +364,7 @@ def visualize(profiling_data):
     """
     converter = CalltreeConverter(profiling_data)
     converter.visualize()
+
 
 def convert(profiling_data, outputfile):
     """convert `profiling_data` to calltree format and dump it to `outputfile`

@@ -2,11 +2,17 @@ from setuptools import setup
 
 version = '1.4.3'
 
+
+def readall(path):
+    with open(path) as f:
+        return f.read()
+
+
 setup(
     name='pyprof2calltree',
     version=version,
     description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
-    long_description=open('README.rst').read(),
+    long_description=readall('README.rst'),
     keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
     classifiers=[
         "Development Status :: 5 - Production/Stable",

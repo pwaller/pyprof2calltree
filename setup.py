@@ -27,11 +27,17 @@ Topic :: System :: System Shells
 Topic :: Utilities
 """
 
+
+def readall(path):
+    with open(path) as f:
+        return f.read()
+
+
 setup(
     name='pyprof2calltree',
     version=version,
     description="Help visualize profiling data from cProfile with kcachegrind and qcachegrind",
-    long_description=open('README.rst').read(),
+    long_description=readall('README.rst'),
     keywords='profiler visualization programming tool kde kcachegrind qcachegrind',
     classifiers=[c for c in classifiers.split("\n") if c and c.strip()],
     author='Olivier Grisel',

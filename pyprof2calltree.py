@@ -136,17 +136,14 @@ def pstats2entries(data):
 
 def is_installed(prog):
     """Return whether or not a given executable is installed on the machine."""
-    devnull = open(os.devnull, 'w')
-
-    try:
-        if os.name == 'nt':
-            retcode = subprocess.call(['where', prog], stdout=devnull)
-        else:
-            retcode = subprocess.call(['which', prog], stdout=devnull)
-    except FileNotFoundError:
-        retcode = 1
-
-    devnull.close()
+    with open(os.devnull, 'w') as devnull:
+        try:
+            if os.name == 'nt':
+                retcode = subprocess.call(['where', prog], stdout=devnull)
+            else:
+                retcode = subprocess.call(['which', prog], stdout=devnull)
+        except FileNotFoundError:
+            retcode = 1
 
     return retcode == 0
 
@@ -209,11 +206,12 @@ class CalltreeConverter(object):
         """
 
         if self.out_file is None:
-            _, outfile = tempfile.mkstemp(".log", "pyprof2calltree")
-            f = open(outfile, "w")
-            self.output(f)
+            fd, outfile = tempfile.mkstemp(".log", "pyprof2calltree")
+            with open(fd, "w") as f:
+                self.output(f)
             use_temp_file = True
         else:
+            outfile = self.out_file.name
             use_temp_file = False
 
         available_cmd = None
@@ -228,10 +226,8 @@ class CalltreeConverter(object):
                     ", ".join(KCACHEGRIND_EXECUTABLES))
             return
 
-        self.out_file.close()
-
         try:
-            subprocess.call([cmd, self.out_file.name])
+            subprocess.call([cmd, outfile])
         finally:
             # clean the temporary file
             if use_temp_file:
@@ -341,7 +337,8 @@ def main():
         # user either explicitly required output file or requested by not
         # explicitly asking to launch kcachegrind
         sys.stderr.write("writing converted data to: %s\n" % outfile)
-        kg.output(open(outfile, 'w'))
+        with open(outfile, 'w') as f:
+            kg.output(f)
 
     if options.kcachegrind:
         sys.stderr.write("launching kcachegrind\n")
@@ -373,11 +370,8 @@ def convert(profiling_data, outputfile):
     """
     converter = CalltreeConverter(profiling_data)
     if is_basestring(outputfile):
-        f = open(outputfile, "w")
-        try:
+        with open(outputfile, "w") as f:
             converter.output(f)
-        finally:
-            f.close()
     else:
         converter.output(outputfile)
 

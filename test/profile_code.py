@@ -123,7 +123,7 @@ fl=~
 fn=<range>
 0 1000
 
-""".replace('<filename>', __file__)
+""".replace('<filename>', top.__code__.co_filename)
 
 expected_output_py3 = """event: ns : Nanoseconds
 events: ns

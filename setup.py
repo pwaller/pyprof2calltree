@@ -39,7 +39,7 @@ setup(
     maintainer='Peter Waller',
     maintainer_email='p@pwaller.net',
     url='https://github.com/pwaller/pyprof2calltree/',
-    license='BSD',
+    license='MIT',
     py_modules = ['pyprof2calltree'],
     zip_safe=True,
     test_suite='test',

@@ -1,1 +1,3 @@
-include pyprof2calltree.py
+include LICENSE
+include CONTRIBUTORS.txt
+recursive-include test *.py

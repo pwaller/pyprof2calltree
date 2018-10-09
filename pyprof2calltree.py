@@ -214,17 +214,7 @@ class CalltreeConverter(object):
         must be present in the system path.
         """
 
-        if self.out_file is None:
-            fd, outfile = tempfile.mkstemp(".log", "pyprof2calltree")
-            with open(fd, "w") as f:
-                self.output(f)
-            use_temp_file = True
-        else:
-            outfile = self.out_file.name
-            use_temp_file = False
-
         available_cmd = None
-
         for cmd in KCACHEGRIND_EXECUTABLES:
             if is_installed(cmd):
                 available_cmd = cmd
@@ -235,8 +225,18 @@ class CalltreeConverter(object):
                              ", ".join(KCACHEGRIND_EXECUTABLES))
             return
 
+        if self.out_file is None:
+            fd, outfile = tempfile.mkstemp(".log", "pyprof2calltree")
+            use_temp_file = True
+        else:
+            outfile = self.out_file.name
+            use_temp_file = False
+
         try:
-            subprocess.call([cmd, outfile])
+            if use_temp_file:
+                with open(fd, "w") as f:
+                    self.output(f)
+            subprocess.call([available_cmd, outfile])
         finally:
             # clean the temporary file
             if use_temp_file:

@@ -33,9 +33,12 @@ This script can either take raw cProfile.Profile.getstats() log entries or
 take a previously recorded instance of the pstats.Stats class.
 """
 
+from __future__ import unicode_literals
+
 import argparse
 import cProfile
 import errno
+import io
 import os
 import pstats
 import subprocess
@@ -234,7 +237,7 @@ class CalltreeConverter(object):
 
         try:
             if use_temp_file:
-                with open(fd, "w") as f:
+                with io.open(fd, "w") as f:
                     self.output(f)
             subprocess.call([available_cmd, outfile])
         finally:

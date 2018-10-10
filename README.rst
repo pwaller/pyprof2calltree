@@ -23,18 +23,19 @@ Command line usage
 Upon installation you should have a `pyprof2calltree` script in your path::
 
   $ pyprof2calltree --help
-  Usage: /usr/bin/pyprof2calltree [-k] [-o output_file_path] [-i input_file_path] [-r scriptfile [args]]
+  usage: pyprof2calltree [-h] [-o output_file_path] [-i input_file_path] [-k]
+                         [-r scriptfile [args ...]]
 
-  Options:
+  optional arguments:
     -h, --help            show this help message and exit
-    -o OUTFILE, --outfile=OUTFILE
+    -o output_file_path, --outfile output_file_path
                           Save calltree stats to <outfile>
-    -i INFILE, --infile=INFILE
+    -i input_file_path, --infile input_file_path
                           Read Python stats from <infile>
-    -r SCRIPT, --run-script=SCRIPT
+    -k, --kcachegrind     Run the kcachegrind tool on the converted data
+    -r scriptfile [args ...], --run-script scriptfile [args ...]
                           Name of the Python script to run to collect profiling
                           data
-    -k, --kcachegrind     Run the kcachegrind tool on the converted data
 
 
 Python shell usage

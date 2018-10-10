@@ -303,25 +303,23 @@ def main():
 
     if args.script is not None:
         # collect profiling data by running the given script
-
-        sys.argv[:] = args.script
         if not args.outfile:
             outfile = '%s.log' % os.path.basename(args.script[0])
 
-        prof = cProfile.Profile()
-
-        # Try to deal with programs (e.g., bzr) that avoid sys.exit(),
-        # but still run atexit handlers.
-        import atexit
-        atexit.register(exit)
-
+        fd, tmp_path = tempfile.mkstemp(suffix='.prof', prefix='pyprof2calltree')
+        os.close(fd)
         try:
-            try:
-                prof = prof.run('execfile(%r)' % (sys.argv[0],))
-            except SystemExit:
-                pass
+            cmd = [
+                sys.executable,
+                '-m', 'cProfile',
+                '-o', tmp_path,
+            ]
+            cmd.extend(args.script)
+            subprocess.check_call(cmd)
+
+            kg = CalltreeConverter(tmp_path)
         finally:
-            kg = CalltreeConverter(pstats.Stats(prof))
+            os.remove(tmp_path)
 
     elif args.infile is not None:
         # use the profiling data from some input file

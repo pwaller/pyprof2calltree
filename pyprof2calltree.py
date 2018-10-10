@@ -287,14 +287,15 @@ def main():
     """Execute the converter using parameters provided on the command line"""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-o', '--outfile',
+    parser.add_argument('-o', '--outfile', metavar='output_file_path',
                         help="Save calltree stats to <outfile>")
-    parser.add_argument('-i', '--infile',
+    parser.add_argument('-i', '--infile', metavar='input_file_path',
                         help="Read Python stats from <infile>")
     parser.add_argument('-k', '--kcachegrind',
                         help="Run the kcachegrind tool on the converted data",
                         action="store_true")
-    parser.add_argument('-r', '--run-script', nargs='+', dest='script',
+    parser.add_argument('-r', '--run-script',
+                        nargs='+', metavar=('scriptfile', 'args'), dest='script',
                         help="Name of the Python script to run to collect"
                         " profiling data")
     args = parser.parse_args()

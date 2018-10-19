@@ -81,6 +81,7 @@ or with the ipython_::
 Change log
 ==========
 
+ - 1.4.4 - 2018-10-19: Numerous small improvements, drop support for EOL python versions
  - 1.4.3 - 2017-07-28: Windows support (fixed is_installed check - #21)
  - 1.4.2 - 2017-07-19: No feature or bug fixes, just license clarification (#20)
  - 1.4.1 - 2017-05-20: No feature or bug fixes, just test distribution (#17)

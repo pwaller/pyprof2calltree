@@ -298,7 +298,9 @@ def main():
                         help="Run the kcachegrind tool on the converted data",
                         action="store_true")
     parser.add_argument('-r', '--run-script',
-                        nargs='+', metavar=('scriptfile', 'args'), dest='script',
+                        nargs=argparse.REMAINDER,
+                        metavar=('scriptfile', 'args'),
+                        dest='script',
                         help="Name of the Python script to run to collect"
                         " profiling data")
     args = parser.parse_args()

@@ -48,9 +48,6 @@ setup(
     zip_safe=True,
     test_suite='test',
     entry_points={
-        'setuptools.installation': [
-            'eggsecutable = pyprof2calltree:main',
-        ],
         'console_scripts': [
             'pyprof2calltree = pyprof2calltree:main',
         ],

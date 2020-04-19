@@ -48,9 +48,6 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     zip_safe=True,
     entry_points={
-        'setuptools.installation': [
-            'eggsecutable = pyprof2calltree:main',
-        ],
         'console_scripts': [
             'pyprof2calltree = pyprof2calltree:main',
         ],

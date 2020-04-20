@@ -17,6 +17,12 @@ kdesdk_ package.
 .. _kdesdk: http://websvn.kde.org/trunk/KDE/kdesdk/kcachegrind/converters/
 .. _screenshots: http://images.google.fr/images?q=kcachegrind
 
+Installation
+============
+
+On Debian ≥ 11, or derivatives such as Ubuntu ≥ 20.04, `sudo apt
+install kcachegrind pyprof2calltree`.
+
 Command line usage
 ==================
 

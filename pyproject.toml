@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyprof2calltree"
+version = "1.4.5"
+description = "Help visualize profiling data from cProfile with kcachegrind and qcachegrind"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+authors = [{name = "Olivier Grisel", email = "olivier.grisel@ensta.org"}]
+maintainers = [{name = "Peter Waller", email = "p@pwaller.net"}]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.4"
+keywords = [
+    "kcachegrind",
+    "kde",
+    "profiler",
+    "programming",
+    "qcachegrind",
+    "tool",
+    "visualization",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: X11 Applications :: KDE",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Desktop Environment :: K Desktop Environment (KDE)",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: System :: System Shells",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/pwaller/pyprof2calltree/"
+
+[project.scripts]
+pyprof2calltree = "pyprof2calltree:main"
+
+[tool.setuptools]
+py-modules = ["pyprof2calltree"]
